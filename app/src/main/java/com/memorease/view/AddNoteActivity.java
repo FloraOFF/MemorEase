@@ -40,7 +40,7 @@ public class AddNoteActivity extends AppCompatActivity {
         data = findViewById(R.id.textData);
 
         // Aplica a máscara para o campo de data
-        data.addTextChangedListener(new TextWatcher() {
+        /*data.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
 
@@ -54,7 +54,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {}
-        });
+        });*/
 
         Bundle extra = getIntent().getExtras();
 
