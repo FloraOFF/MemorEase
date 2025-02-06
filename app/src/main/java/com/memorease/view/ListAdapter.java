@@ -47,14 +47,16 @@ public class ListAdapter extends ArrayAdapter<Note> {
             holder.noteTitle.setText(note.getTitulo());
             holder.noteDate.setText(note.getData());
 
-            holder.editButton.setOnClickListener(v -> {
-                //Toast.makeText(context, "Editar nota ID: " + note.getId(),
-                //       Toast.LENGTH_SHORT).show();
+            // Desabilita foco nos botões
+            holder.editButton.setFocusable(false);
+            holder.editButton.setFocusableInTouchMode(false);
+            holder.deleteButton.setFocusable(false);
+            holder.deleteButton.setFocusableInTouchMode(false);
 
+            holder.editButton.setOnClickListener(v -> {
                 Intent edicao = new Intent(context, AddNoteActivity.class);
                 edicao.putExtra("note_id", note.getId());
                 context.startActivity(edicao);
-                // TODO: Implementar edição
             });
 
             holder.deleteButton.setOnClickListener(v -> {
@@ -64,18 +66,28 @@ public class ListAdapter extends ArrayAdapter<Note> {
                 Toast.makeText(context, "Nota deletada com sucesso!",
                         Toast.LENGTH_SHORT).show();
             });
+
+            // Clique no item da lista (exceto nos botões)
+            holder.itemContainer.setOnClickListener(v -> {
+                Intent verAnotacao = new Intent(context, NoteViewActivity.class);
+                verAnotacao.putExtra("note_id", note.getId());
+                context.startActivity(verAnotacao);
+               // Toast.makeText(context, "Clicou no item: " + note.getTitulo(), Toast.LENGTH_SHORT).show();
+            });
         }
 
         return convertView;
     }
 
     static class ViewHolder {
+        LinearLayout itemContainer;
         TextView noteTitle;
         TextView noteDate;
         ImageButton editButton;
         ImageButton deleteButton;
 
         ViewHolder(View view) {
+            itemContainer = view.findViewById(R.id.itemContainer);
             noteTitle = view.findViewById(R.id.noteTitle);
             noteDate = view.findViewById(R.id.noteDate);
             editButton = view.findViewById(R.id.editButton);
@@ -83,3 +95,4 @@ public class ListAdapter extends ArrayAdapter<Note> {
         }
     }
 }
+

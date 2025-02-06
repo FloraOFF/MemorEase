@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +40,8 @@ public class ShowNoteActivity extends AppCompatActivity {
 
         listarDados.setOnItemClickListener((parent, view, position, id) -> {
             Note note = adapter.getItem(position);
+
+            Toast.makeText(this, position + "Anotação: " + note, Toast.LENGTH_SHORT).show();
             if (note != null) {
                 // Implemente aqui a navegação para a tela de edição
                 Intent verAnotacao = new Intent(this, NoteViewActivity.class);

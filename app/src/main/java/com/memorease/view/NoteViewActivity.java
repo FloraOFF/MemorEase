@@ -1,6 +1,8 @@
 package com.memorease.view;
 
 import android.os.Bundle;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,10 @@ public class NoteViewActivity extends AppCompatActivity {
     private NoteController noteController;
     private Note note;
 
+    TextView titulo;
+    TextView conteudo;
+    TextView data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +32,10 @@ public class NoteViewActivity extends AppCompatActivity {
 
         Bundle extra = getIntent().getExtras();
 
+        titulo = findViewById(R.id.textTitulo);
+        conteudo = findViewById(R.id.textConteudo);
+        data = findViewById(R.id.textData);
+
         if (extra != null) {
             try {
                 Integer noteId = extra.getInt("note_id", -1);
@@ -33,10 +43,14 @@ public class NoteViewActivity extends AppCompatActivity {
                 note = noteController.get(noteId);
 
                 if (note != null) {
-
+                    titulo.setText(note.getTitulo());
+                    conteudo.setText(note.getConteudo());
+                    data.setText(note.getData());
+                } else {
+                    Toast.makeText(this, "Nota não encontrada!", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                Toast.makeText(this, "ID da nota inválido!", Toast.LENGTH_SHORT).show();
             }
         }
     }
