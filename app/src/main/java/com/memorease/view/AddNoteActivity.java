@@ -1,12 +1,17 @@
 package com.memorease.view;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,13 +19,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.memorease.R;
 import com.memorease.controller.NoteController;
+import com.memorease.model.ETipo;
 import com.memorease.model.Note;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddNoteActivity extends AppCompatActivity {
 
     EditText titulo;
     EditText conteudo;
     EditText data;
+
+    private Spinner spinnerTipo;
 
     private NoteController noteController;
     private Note note;
@@ -38,23 +52,26 @@ public class AddNoteActivity extends AppCompatActivity {
         titulo = findViewById(R.id.textTitulo);
         conteudo = findViewById(R.id.textConteudo);
         data = findViewById(R.id.textData);
+        String dataText = data.getText().toString();
+        spinnerTipo = findViewById(R.id.spinnerTipo);
 
-        // Aplica a máscara para o campo de data
-        /*data.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+        // Torna o EditText da data não editável
+        data.setFocusable(false);
+        data.setClickable(true);
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // Adiciona a barra "/" ao digitar a data
-                if (charSequence.length() == 2 || charSequence.length() == 5) {
-                    data.append("/");
-                }
-            }
+        // Configura o click listener para abrir o DatePicker
+        data.setOnClickListener(v -> showDatePickerDialog());
 
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });*/
+        // Converte os valores do enum ETipo para um array de Strings
+        String[] tipos = new String[ETipo.values().length];
+        for (int i = 0; i < ETipo.values().length; i++) {
+            tipos[i] = ETipo.values()[i].name(); // Converte para string
+        }
+
+        // Configura o Adapter para o Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_color, tipos);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTipo.setAdapter(adapter);
 
         Bundle extra = getIntent().getExtras();
 
@@ -70,6 +87,10 @@ public class AddNoteActivity extends AppCompatActivity {
                     titulo.setText(note.getTitulo());
                     conteudo.setText(note.getConteudo());
                     data.setText(note.getData());
+
+                    int position = adapter.getPosition(note.getTipoNote().name());
+                    spinnerTipo.setSelection(position);
+
                 } else {
                     Toast.makeText(this, "Nota não encontrada!", Toast.LENGTH_SHORT).show();
                 }
@@ -88,6 +109,7 @@ public class AddNoteActivity extends AppCompatActivity {
         String tituloText = titulo.getText().toString().trim();
         String conteudoText = conteudo.getText().toString().trim();
         String dataText = data.getText().toString().trim();
+        String tipoSelecionado = spinnerTipo.getSelectedItem().toString();
 
         // Validação básica
         if (tituloText.isEmpty() || conteudoText.isEmpty() || dataText.isEmpty()) {
@@ -99,6 +121,7 @@ public class AddNoteActivity extends AppCompatActivity {
         note.setTitulo(tituloText);
         note.setConteudo(conteudoText);
         note.setData(dataText);
+        note.setTipoNote(ETipo.valueOf(tipoSelecionado));
 
         // Salva a nota
         try {
@@ -136,5 +159,22 @@ public class AddNoteActivity extends AppCompatActivity {
     private void listarNotes(View view) {
         Intent anotacoes = new Intent(getApplicationContext(), ShowNoteActivity.class);
         startActivity(anotacoes);
+    }
+
+    private void showDatePickerDialog() {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    // Formata a data como dd/MM/yyyy
+                    String selectedDate = String.format(Locale.getDefault(), "%02d/%02d/%d",
+                            dayOfMonth, (monthOfYear + 1), year1);
+                    data.setText(selectedDate);
+                }, year, month, day);
+
+        datePickerDialog.show();
     }
 }

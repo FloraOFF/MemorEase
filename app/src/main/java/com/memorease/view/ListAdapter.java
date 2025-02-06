@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.memorease.R;
 import com.memorease.controller.NoteController;
 import com.memorease.model.Note;
@@ -46,6 +48,28 @@ public class ListAdapter extends ArrayAdapter<Note> {
         if (note != null) {
             holder.noteTitle.setText(note.getTitulo());
             holder.noteDate.setText(note.getData());
+            holder.noteTipo.setText(note.getTipoNote().toString());
+
+            switch (note.getTipoNote()) {
+                case PESSOAL:
+                    holder.noteTipo.setTextColor(ContextCompat.getColor(context, R.color.color_pessoal));
+                    break;
+                case TRABALHO:
+                    holder.noteTipo.setTextColor(ContextCompat.getColor(context, R.color.color_trabalho));
+                    break;
+                case ESTUDO:
+                    holder.noteTipo.setTextColor(ContextCompat.getColor(context, R.color.color_estudo));
+                    break;
+                case SAÚDE:
+                    holder.noteTipo.setTextColor(ContextCompat.getColor(context, R.color.color_saude));
+                    break;
+                case FINANÇAS:
+                    holder.noteTipo.setTextColor(ContextCompat.getColor(context, R.color.color_financas));
+                    break;
+                case OUTROS:
+                    holder.noteTipo.setTextColor(ContextCompat.getColor(context, R.color.color_outros));
+                    break;
+            }
 
             // Desabilita foco nos botões
             holder.editButton.setFocusable(false);
@@ -83,6 +107,8 @@ public class ListAdapter extends ArrayAdapter<Note> {
         LinearLayout itemContainer;
         TextView noteTitle;
         TextView noteDate;
+
+        TextView noteTipo;
         ImageButton editButton;
         ImageButton deleteButton;
 
@@ -90,6 +116,7 @@ public class ListAdapter extends ArrayAdapter<Note> {
             itemContainer = view.findViewById(R.id.itemContainer);
             noteTitle = view.findViewById(R.id.noteTitle);
             noteDate = view.findViewById(R.id.noteDate);
+            noteTipo = view.findViewById(R.id.noteTipo);
             editButton = view.findViewById(R.id.editButton);
             deleteButton = view.findViewById(R.id.deleteButton);
         }

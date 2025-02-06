@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="color_pessoal">#FF6347</color> <!-- Exemplo para o tipo PESSOAL -->
+    <color name="color_trabalho">#4682B4</color> <!-- Exemplo para o tipo TRABALHO -->
+    <color name="color_estudo">#32CD32</color> <!-- Exemplo para o tipo ESTUDO -->
+    <color name="color_saude">#FFD700</color> <!-- Exemplo para o tipo SAÚDE -->
+    <color name="color_financas">#8A2BE2</color> <!-- Exemplo para o tipo FINANÇAS -->
+    <color name="color_outros">#D3D3D3</color> <!-- Exemplo para o tipo OUTROS -->
 </resources>

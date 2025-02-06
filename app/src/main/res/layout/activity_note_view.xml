@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/note"
+        android:src="@drawable/show_note_view"
         android:scaleType="centerCrop"/>
 
     <LinearLayout
@@ -82,7 +82,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="30dp"
             android:gravity="bottom"
             android:orientation="vertical"
             android:paddingTop="15dp"
@@ -90,17 +91,19 @@
 
             <Button
                 android:id="@+id/showNotesButton"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginHorizontal="20dp"
                 android:onClick="showNote"
                 android:text="Ver outras anotações" />
 
             <Button
                 android:id="@+id/addNoteButton"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginHorizontal="20dp"
                 android:onClick="addNote"
                 android:text="Nova anotação" />
 
