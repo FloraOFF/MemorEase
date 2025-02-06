@@ -40,6 +40,15 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:hint="Filtro de busca"
+                android:textColorHint="#000000"/>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

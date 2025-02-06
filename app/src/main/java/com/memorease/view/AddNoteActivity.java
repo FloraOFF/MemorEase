@@ -132,4 +132,9 @@ public class AddNoteActivity extends AppCompatActivity {
         conteudo.setText("");
         data.setText("");
     }
+
+    private void listarNotes(View view) {
+        Intent anotacoes = new Intent(getApplicationContext(), ShowNoteActivity.class);
+        startActivity(anotacoes);
+    }
 }

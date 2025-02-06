@@ -1,6 +1,8 @@
 package com.memorease.view;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,5 +55,20 @@ public class NoteViewActivity extends AppCompatActivity {
                 Toast.makeText(this, "ID da nota inválido!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public void showNote(View view) {
+        Intent mostrarAnostracoes = new Intent(getApplicationContext(), ShowNoteActivity.class);
+        startActivity(mostrarAnostracoes);
+    }
+
+    public void addNote(View view) {
+        Intent novaAnotacao = new Intent(getApplicationContext(), AddNoteActivity.class);
+        startActivity(novaAnotacao);
+    }
+
+    public void startNote(View view) {
+        Intent inicio = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(inicio);
     }
 }

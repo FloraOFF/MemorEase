@@ -73,6 +73,28 @@ public class NoteDAO extends SQLiteOpenHelper {
         return null;
     }
 
+    public List<Note> get(String termoBusca) {
+        List<Note> notes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE titulo LIKE ? OR conteudo LIKE ? OR data LIKE ? ORDER BY data DESC", new String[]{"%" + termoBusca + "%", "%" + termoBusca + "%", "%" + termoBusca + "%"});
+
+        if (cursor.moveToFirst()) {
+            do {
+                Note note = new Note();
+                note.setId(cursor.getInt(0));
+                note.setTitulo(cursor.getString(1));
+                note.setConteudo(cursor.getString(2));
+                note.setData(cursor.getString(3));
+                notes.add(note);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return notes;
+    }
+
+
     public Note save(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

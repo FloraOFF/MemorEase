@@ -20,9 +20,9 @@ public class NoteController {
         return dao.get(id);
     }
 
-    /*public List<Note> get(String termoBusca) {
+    public List<Note> get(String termoBusca) {
         return dao.get(termoBusca);
-    }*/
+    }
     public Note createOrUpdate(Note note) {
         return dao.save(note);
     }
