@@ -8,4 +8,5 @@ public class Note {
     private String titulo;
     private String conteudo;
     private String data;
+    private ETipo tipoNote;
 }

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.memorease.model.ETipo;
 import com.memorease.model.Note;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class NoteDAO extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME +
-                " (id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, conteudo TEXT, data TEXT);";
+                " (id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, conteudo TEXT, data TEXT, tipo TEXT);";
         db.execSQL(createTable);
     }
 
@@ -45,6 +46,14 @@ public class NoteDAO extends SQLiteOpenHelper {
                 note.setTitulo(cursor.getString(1));
                 note.setConteudo(cursor.getString(2));
                 note.setData(cursor.getString(3));
+                // Conversão da String para Enum
+                String tipoString = cursor.getString(4);
+                try {
+                    note.setTipoNote(ETipo.valueOf(tipoString)); // Converte String para Enum
+                } catch (IllegalArgumentException | NullPointerException e) {
+                    note.setTipoNote(ETipo.OUTROS); // Define um valor padrão se houver erro
+                }
+
                 notes.add(note);
             } while (cursor.moveToNext());
         }
@@ -56,7 +65,7 @@ public class NoteDAO extends SQLiteOpenHelper {
 
     public Note get(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, new String[]{"id", "titulo", "conteudo", "data"},
+        Cursor cursor = db.query(TABLE_NAME, new String[]{"id", "titulo", "conteudo", "data", "tipo"},
                 "id = ?", new String[]{String.valueOf(id)}, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -65,6 +74,14 @@ public class NoteDAO extends SQLiteOpenHelper {
             note.setTitulo(cursor.getString(1));
             note.setConteudo(cursor.getString(2));
             note.setData(cursor.getString(3));
+            // Conversão da String para Enum
+            String tipoString = cursor.getString(4);
+            try {
+                note.setTipoNote(ETipo.valueOf(tipoString)); // Converte String para Enum
+            } catch (IllegalArgumentException | NullPointerException e) {
+                note.setTipoNote(ETipo.OUTROS); // Define um valor padrão se houver erro
+            }
+
             cursor.close();
             db.close();
             return note;
@@ -76,7 +93,12 @@ public class NoteDAO extends SQLiteOpenHelper {
     public List<Note> get(String termoBusca) {
         List<Note> notes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE titulo LIKE ? OR conteudo LIKE ? OR data LIKE ? ORDER BY data DESC", new String[]{"%" + termoBusca + "%", "%" + termoBusca + "%", "%" + termoBusca + "%"});
+        String termoBuscaUpper = termoBusca.toUpperCase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + TABLE_NAME + " WHERE titulo LIKE ? OR conteudo LIKE ? OR data LIKE ? OR tipo LIKE ? ORDER BY data DESC",
+                new String[]{"%" + termoBuscaUpper + "%", "%" + termoBuscaUpper + "%", "%" + termoBuscaUpper + "%", "%" + termoBuscaUpper + "%"}
+        );
+
 
         if (cursor.moveToFirst()) {
             do {
@@ -85,6 +107,14 @@ public class NoteDAO extends SQLiteOpenHelper {
                 note.setTitulo(cursor.getString(1));
                 note.setConteudo(cursor.getString(2));
                 note.setData(cursor.getString(3));
+                // Conversão da String para Enum
+                String tipoString = cursor.getString(4);
+                try {
+                    note.setTipoNote(ETipo.valueOf(tipoString)); // Converte String para Enum
+                } catch (IllegalArgumentException | NullPointerException e) {
+                    note.setTipoNote(ETipo.OUTROS); // Define um valor padrão se houver erro
+                }
+
                 notes.add(note);
             } while (cursor.moveToNext());
         }
@@ -101,6 +131,7 @@ public class NoteDAO extends SQLiteOpenHelper {
         values.put("titulo", note.getTitulo());
         values.put("conteudo", note.getConteudo());
         values.put("data", note.getData());
+        values.put("tipo", note.getTipoNote().toString());
 
         if (note.getId() <= 0) { // Novo registro
             long id = db.insert(TABLE_NAME, null, values);
