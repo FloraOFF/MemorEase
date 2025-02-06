@@ -37,18 +37,18 @@ public class ShowNoteActivity extends AppCompatActivity {
 
         listarDados();
 
-    /*    listarDados.setOnItemClickListener((parent, view, position, id) -> {
+        listarDados.setOnItemClickListener((parent, view, position, id) -> {
             Note note = adapter.getItem(position);
             if (note != null) {
                 // Implemente aqui a navegação para a tela de edição
-                Intent editarAnotacao = new Intent(this, AddNoteActivity.class);
-                editarAnotacao.putExtra("note_id", note.getId());
-                startActivity(editarAnotacao);
+                Intent verAnotacao = new Intent(this, NoteViewActivity.class);
+                verAnotacao.putExtra("note_id", note.getId());
+                startActivity(verAnotacao);
                 // Intent intent = new Intent(this, EditNoteActivity.class);
                 // intent.putExtra("note_id", note.getId());
                 // startActivity(intent);
             }
-        });*/
+        });
     }
 
     public void listarDados() {

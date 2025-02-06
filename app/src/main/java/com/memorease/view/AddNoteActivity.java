@@ -110,7 +110,7 @@ public class AddNoteActivity extends AppCompatActivity {
             } else {
                 // Cria uma nova nota
                 noteController.createOrUpdate(note);
-                Toast.makeText(this, "Nota salva com sucesso! " + note.getId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Nota salva com sucesso!", Toast.LENGTH_SHORT).show();
             }
 
             // Limpa os campos após salvar

@@ -48,8 +48,8 @@ public class ListAdapter extends ArrayAdapter<Note> {
             holder.noteDate.setText(note.getData());
 
             holder.editButton.setOnClickListener(v -> {
-                Toast.makeText(context, "Editar nota ID: " + note.getId(),
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Editar nota ID: " + note.getId(),
+                //       Toast.LENGTH_SHORT).show();
 
                 Intent edicao = new Intent(context, AddNoteActivity.class);
                 edicao.putExtra("note_id", note.getId());
